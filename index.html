@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberNix Raffle – Win a Digital Discovery Day!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #ffffff; /* White background */
+            color: black; /* Black text */
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #f8f8f8; /* Light grey for contrast */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 150px;
+            display: block;
+            margin: 10px auto;
+        }
+        h1 {
+            color: #ff00ff; /* CyberNix pink */
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #ff00ff; /* CyberNix pink */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background: #e600e6; /* Slightly darker pink */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="cybernix-logo.png" alt="CyberNix Logo">
+        <h1>🎮 CyberNix Raffle 🎟️</h1>
+        <p>Enter for a chance to <strong>win a Digital Discovery Day</strong>!  
+        All proceeds go towards <strong>funding free digital education</strong> in our community.</p>
+
+        <h2>🏆 Prizes:</h2>
+        <p>🥇 <strong>1st Place:</strong> 4-Hour Digital Discovery Day </p>
+        <p>🥈 <strong>2nd Place:</strong> 3-Hour Digital Discovery Day</p>
+        <p>🥉 <strong>3rd Place:</strong> 2-Hour Digital Discovery Day</p>
+        
+        <h3>💰 $10 Per Ticket</h3>
+        <p><strong>Payment Methods:</strong> Bank Transfer</p>
+        <p><strong>Account Name:</strong> CyberNix</p>
+        <p><strong>Account Number:</strong> 38-9017-0281444-04</p>
+        <p><strong>Reference:</strong> Your Email</p>
+        
+        <p><strong>🎉 Bonus:</strong> Every person that enters the raffle gets a <strong>50% discount</strong> on our Digital Discovery Day Party Package!</p>
+
+       <form id="raffleForm">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <input type="number" id="tickets" placeholder="Number of Tickets" required min="1">
+    <input type="file" id="payment" accept="image/*" required>
+    <button type="submit">Enter Raffle</button>
+</form>
+
+        <p id="responseMsg"></p>
+    </div>
+
+    <script>
+        document.getElementById("raffleForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var tickets = document.getElementById("tickets").value;
+    var fileInput = document.getElementById("payment").files[0];
+
+    if (!fileInput) {
+        document.getElementById("responseMsg").innerText = "❌ Please upload a payment screenshot.";
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(fileInput);
+    reader.onloadend = function() {
+        var fileData = reader.result.split(",")[1];
+
+        var formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("tickets", tickets);
+        formData.append("file", fileData);
+        formData.append("filename", fileInput.name);
+        formData.append("mimetype", fileInput.type);
+
+        fetch("https://script.google.com/macros/s/AKfycbzvXoYBH2jMi6PfFR_5copZDJnyo7n6T9uwmxilnfQYLZxlvnMF72_UYICSTLk_fBsA7Q/exec", { method: "POST", body: formData })
+            .then(response => response.text())
+            .then(result => {
+                if (result === "Success") {
+                    document.getElementById("responseMsg").innerHTML = 
+                        "✅ Good luck! CyberNix will be drawing entries <strong>live on Facebook</strong> on <strong>April 4th at 8 PM</strong>.<br><br>" +
+                        "If you would like to claim your <strong>50% off Digital Discovery Day</strong>, email <strong>nikki@cybernix.co.nz</strong>.<br><br>" +
+                        "<strong>⚠️ Important:</strong> Ensure the email you use matches your entry email to claim your discount!";
+                    document.getElementById("raffleForm").reset();
+                } else {
+                    document.getElementById("responseMsg").innerText = "❌ Error submitting entry. Please try again.";
+                }
+            });
+    };
+});
+
+    </script>
+
+</body>
+</html>
