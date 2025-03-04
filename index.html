@@ -69,65 +69,65 @@
         
         <p><strong>🎉 Bonus:</strong> Every person that enters the raffle gets a <strong>50% discount</strong> on our Digital Discovery Day Party Package!</p>
 
-       <form id="raffleForm">
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="email" id="email" placeholder="Email Address" required>
-    <input type="number" id="tickets" placeholder="Number of Tickets" required min="1">
-    <input type="file" id="payment" accept="image/*" required>
-    <button type="submit">Enter Raffle</button>
-</form>
+        <form id="raffleForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="number" id="tickets" placeholder="Number of Tickets" required min="1">
+            <input type="file" id="payment" accept="image/*" required>
+            <button type="submit">Enter Raffle</button>
+        </form>
 
-        <p id="responseMsg"></p>
     </div>
 
     <script>
         document.getElementById("raffleForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var tickets = document.getElementById("tickets").value;
-    var fileInput = document.getElementById("payment").files[0];
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var tickets = document.getElementById("tickets").value;
+            var fileInput = document.getElementById("payment").files[0];
 
-    if (!fileInput) {
-        document.getElementById("responseMsg").innerText = "❌ Please upload a payment screenshot.";
-        return;
-    }
-
-    var reader = new FileReader();
-    reader.readAsDataURL(fileInput);
-    reader.onloadend = function() {
-        var fileData = reader.result.split(",")[1];
-
-        var formData = new FormData();
-        formData.append("name", name);
-        formData.append("email", email);
-        formData.append("tickets", tickets);
-        formData.append("file", fileData);
-        formData.append("filename", fileInput.name);
-        formData.append("mimetype", fileInput.type);
-
-        fetch("https://script.google.com/macros/s/AKfycbyNotXNP9dVKGuP2hY6T4Lzx4YR2rykl_hwquaXsyKnQz7TfuC7XZSF7xd9gjsz-qFwOQ/exec", { 
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.text())
-        .then(result => {
-            if (result.trim() === "Success") {
-                document.getElementById("responseMsg").innerHTML = 
-                    "✅ Good luck! CyberNix will be drawing entries <strong>live on Facebook</strong> on <strong>April 4th at 8 PM</strong>.<br><br>" +
-                    "If you would like to claim your <strong>50% off Digital Discovery Day</strong>, email <strong>nikki@cybernix.co.nz</strong>.<br><br>" +
-                    "<strong>⚠️ Important:</strong> Ensure the email you use matches your entry email to claim your discount!";
-                document.getElementById("raffleForm").reset();
-            } else {
-                document.getElementById("responseMsg").innerText = "❌ Error submitting entry. Please try again.";
+            if (!fileInput) {
+                alert("❌ Please upload a payment screenshot.");
+                return;
             }
-        })
-        .catch(error => {
-            document.getElementById("responseMsg").innerText = "❌ Network error. Please try again.";
+
+            var reader = new FileReader();
+            reader.readAsDataURL(fileInput);
+            reader.onloadend = function() {
+                var fileData = reader.result.split(",")[1];
+
+                var formData = new FormData();
+                formData.append("name", name);
+                formData.append("email", email);
+                formData.append("tickets", tickets);
+                formData.append("file", fileData);
+                formData.append("filename", fileInput.name);
+                formData.append("mimetype", fileInput.type);
+
+                fetch("https://script.google.com/macros/s/AKfycbyNotXNP9dVKGuP2hY6T4Lzx4YR2rykl_hwquaXsyKnQz7TfuC7XZSF7xd9gjsz-qFwOQ/exec", { 
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    if (result.trim() === "Success") {
+                        alert(
+                            "✅ Good luck! CyberNix will be drawing entries live on Facebook on April 4th at 8 PM.\n\n" +
+                            "If you would like to claim your 50% off Digital Discovery Day, email nikki@cybernix.co.nz.\n\n" +
+                            "⚠️ Important: Ensure the email you use matches your entry email to claim your discount!"
+                        );
+                        document.getElementById("raffleForm").reset();
+                    } else {
+                        alert("❌ Error submitting entry. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    alert("❌ Network error. Please try again.");
+                });
+            };
         });
-    };
-});
     </script>
 
 </body>
