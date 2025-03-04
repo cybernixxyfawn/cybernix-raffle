@@ -107,22 +107,27 @@
         formData.append("filename", fileInput.name);
         formData.append("mimetype", fileInput.type);
 
-        fetch("https://script.google.com/macros/s/AKfycbzvXoYBH2jMi6PfFR_5copZDJnyo7n6T9uwmxilnfQYLZxlvnMF72_UYICSTLk_fBsA7Q/exec", { method: "POST", body: formData })
-            .then(response => response.text())
-            .then(result => {
-                if (result === "Success") {
-                    document.getElementById("responseMsg").innerHTML = 
-                        "✅ Good luck! CyberNix will be drawing entries <strong>live on Facebook</strong> on <strong>April 4th at 8 PM</strong>.<br><br>" +
-                        "If you would like to claim your <strong>50% off Digital Discovery Day</strong>, email <strong>nikki@cybernix.co.nz</strong>.<br><br>" +
-                        "<strong>⚠️ Important:</strong> Ensure the email you use matches your entry email to claim your discount!";
-                    document.getElementById("raffleForm").reset();
-                } else {
-                    document.getElementById("responseMsg").innerText = "❌ Error submitting entry. Please try again.";
-                }
-            });
+        fetch("https://script.google.com/macros/s/AKfycbwEzL_XtUOvts5liPKVzqkegbrmoTIpohNEitRlfMbbW82F7uLEt1PgsLMJnyfROp2qvA/exec", { 
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(result => {
+            if (result.trim() === "Success") {
+                document.getElementById("responseMsg").innerHTML = 
+                    "✅ Good luck! CyberNix will be drawing entries <strong>live on Facebook</strong> on <strong>April 4th at 8 PM</strong>.<br><br>" +
+                    "If you would like to claim your <strong>50% off Digital Discovery Day</strong>, email <strong>nikki@cybernix.co.nz</strong>.<br><br>" +
+                    "<strong>⚠️ Important:</strong> Ensure the email you use matches your entry email to claim your discount!";
+                document.getElementById("raffleForm").reset();
+            } else {
+                document.getElementById("responseMsg").innerText = "❌ Error submitting entry. Please try again.";
+            }
+        })
+        .catch(error => {
+            document.getElementById("responseMsg").innerText = "❌ Network error. Please try again.";
+        });
     };
 });
-
     </script>
 
 </body>
